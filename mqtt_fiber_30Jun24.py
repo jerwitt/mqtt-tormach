@@ -18,6 +18,7 @@ UDP_OUT_IP = "192.168.1.26"
 UDP_OUT_PORT = 19840
 UDP_IN_IP = "192.168.1.22"
 UDP_IN_PORT = 19841
+UDP_IN_TIMEOUT = 15
 
 # Lightburn has very basic Protocol over UDP
 # MESSAGE = "LOADFILE:C:\\test2.ai"
@@ -168,9 +169,9 @@ while True:
         outSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         inSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         # outSock.settimeout(60)
-        inSock.settimeout(10)
+        inSock.settimeout(UDP_IN_TIMEOUT)
         inSock.bind((UDP_IN_IP, UDP_IN_PORT))
-        l.payload = f"OFFLINE {(lc-lp)*15}s"
+        l.payload = f"OFFLINE {(lc-lp)*UDP_IN_TIMEOUT}s"
         client.publish(l.topic, l.payload, 2, False)
     lc += 1
     time.sleep(1)
